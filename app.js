@@ -17,38 +17,38 @@ app.listen(port, () => {
 app.post("/calculate-emi", (req, res) => {
   let { name, amount, period } = req.body;
   //  console.log(name, amount, period);
-  let R = 0;
+  let RATE = 0;
   let EMI = 0;
-  let n = period * 12;
+  let numOfMonths = period * 12;
   const denominator = 1200;
 
   switch (name) {
     case "Home Loan":
-      R = 7 / denominator;
+      RATE = 7 / denominator;
       break;
     case "Personal Loan":
-      R = 10 / denominator;
+      RATE = 10 / denominator;
       break;
     case "Car Loan":
-      R = 9 / denominator;
+      RATE = 9 / denominator;
       break;
     default:
-      R = 8 / denominator;
+      RATE = 8 / denominator;
       break;
   }
 
   let _amount = parseFloat(amount.replace(/,/g, ""));
-  EMI = (_amount * R * (1 + R) ** n) / ((1 + R) ** n - 1);
+  EMI = (_amount * RATE * (1 + RATE) ** numOfMonths) / ((1 + RATE) ** numOfMonths - 1);
 
   console.log(EMI);
 
-  let _interest = n * EMI - _amount;
+  let _interest = (numOfMonths * EMI) - _amount;
   console.log(_interest);
   let total = _amount + _interest;
   console.log(total);
 
   let details = {
-    interestRate: parseFloat(R * 12 * 100).toFixed(2),
+    interestRate: parseFloat(RATE * 12 * 100).toFixed(2),
     monthlyEMI: parseFloat(EMI).toFixed(2),
     principal: parseFloat(_amount).toFixed(2),
     interest: parseFloat(_interest).toFixed(2),
